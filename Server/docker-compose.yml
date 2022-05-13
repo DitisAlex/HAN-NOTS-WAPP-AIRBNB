@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  mssql:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: always
+    ports:
+      - "1433:1433"
+    volumes:
+      - data:/var/opt/mssql
+    env_file:
+      - .env
+
+volumes:
+  data: null
