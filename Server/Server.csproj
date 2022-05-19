@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>docker-compose.yml</DockerComposeProjectPath>
     <UserSecretsId>0ceae61a-7f56-4b19-8d85-c1311db191da</UserSecretsId>
   </PropertyGroup>
 
@@ -28,5 +28,6 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Controllers\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
