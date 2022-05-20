@@ -301,37 +301,19 @@ namespace Server.Models
                     .ValueGeneratedNever()
                     .HasColumnName("id");
 
-                entity.Property(e => e.Availability365).HasColumnName("availability_365");
-
-                entity.Property(e => e.CalculatedHostListingsCount).HasColumnName("calculated_host_listings_count");
-
-                entity.Property(e => e.HostId).HasColumnName("host_id");
-
                 entity.Property(e => e.HostName).HasColumnName("host_name");
-
-                entity.Property(e => e.LastReview).HasColumnName("last_review");
 
                 entity.Property(e => e.Latitude).HasColumnName("latitude");
 
                 entity.Property(e => e.Longitude).HasColumnName("longitude");
 
-                entity.Property(e => e.MinimumNights).HasColumnName("minimum_nights");
-
                 entity.Property(e => e.Name).HasColumnName("name");
 
                 entity.Property(e => e.Neighbourhood).HasColumnName("neighbourhood");
 
-                entity.Property(e => e.NeighbourhoodGroup)
-                    .HasMaxLength(1)
-                    .HasColumnName("neighbourhood_group");
-
                 entity.Property(e => e.NumberOfReviews).HasColumnName("number_of_reviews");
 
                 entity.Property(e => e.Price).HasColumnName("price");
-
-                entity.Property(e => e.ReviewsPerMonth).HasColumnName("reviews_per_month");
-
-                entity.Property(e => e.RoomType).HasColumnName("room_type");
             });
 
             modelBuilder.Entity<SummaryReview>(entity =>

@@ -1,46 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using Server.Repositories;
 
 namespace Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ListingsController : ControllerBase
     {
-        private readonly AirBNBContext _context;
+        private readonly IListingsRepository _listingsRepository;
 
-        public ListingsController(AirBNBContext context)
+        public ListingsController(IListingsRepository listingsRepository)
         {
-            _context = context;
+            _listingsRepository = listingsRepository;
         }
 
         // GET: api/Listings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Listing>>> GetListings()
+        public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings()
         {
-          if (_context.Listings == null)
-          {
-              return NotFound();
-          }
-            return await _context.Listings.Take(5).ToListAsync();
+            return await _listingsRepository.GetListings();
         }
 
         // GET: api/Listings/2818
         [HttpGet("{id}")]
         public async Task<ActionResult<Listing>> GetListing(int id)
         {
-          if (_context.Listings == null)
-          {
-              return NotFound();
-          }
-            var listing = await _context.Listings.FindAsync(id);
+            var listing = await _listingsRepository.GetListing(id);
 
             if (listing == null)
             {
                 return NotFound();
             }
-
             return listing;
         }
     }

@@ -24,10 +24,12 @@
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="Controllers\" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
+    <None Remove="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 </Project>

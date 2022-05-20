@@ -1,14 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<AirBNBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<AirBNBContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+}
+);
+
+builder.Services.AddScoped<IListingsRepository, ListingsRepository>();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
