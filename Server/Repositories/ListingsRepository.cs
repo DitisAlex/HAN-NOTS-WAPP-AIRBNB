@@ -20,12 +20,12 @@ public class ListingsRepository : IListingsRepository
             Id = listing.Id,
             Name = listing.Name,
             HostName = listing.HostName,
-            Neighbourhood = listing.Neighbourhood,
+            Neighbourhood = listing.NeighbourhoodCleansed,
             Latitude = listing.Latitude,
             Longitude = listing.Longitude,
             Price = listing.Price,
             NumberOfReviews = listing.NumberOfReviews
-        }).Take(5).ToListAsync();
+        }).Take(10).ToListAsync();
     }
 
     public async Task<Listing?> GetListing(int id)
