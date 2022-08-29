@@ -19,7 +19,7 @@ export default function Home(props) {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/mapbox/outdoors-v11",
       center: [lng, lat],
       zoom: zoom,
     });
@@ -34,26 +34,123 @@ export default function Home(props) {
   }, []);
 
   useEffect(() => {
-    console.log(listingsGeo);
     if (listingsGeo && listingsGeo.features.length) {
+      console.log(listingsGeo);
       map.current.on("load", () => {
-        map.current.addSource("listings", {
-          type: "geojson",
-          data: listingsGeo,
+        if (!map.current.getSource("listings")) {
+          map.current.addSource("listings", {
+            type: "geojson",
+            data: listingsGeo,
+            cluster: true,
+            clusterMaxZoom: 12, // Max zoom to cluster points on
+            clusterRadius: 40, // Radius of each cluster when clustering points (defaults to 50)
+          });
+        }
+
+        map.current.getSource("listings").setData(listingsGeo);
+
+        map.current.addLayer({
+          id: "clusters",
+          type: "circle",
+          source: "listings",
+          filter: ["has", "point_count"],
+          paint: {
+            "circle-color": [
+              "step",
+              ["get", "point_count"],
+              "#51bbd6",
+              100,
+              "#f1f075",
+              750,
+              "#f28cb1",
+            ],
+            "circle-radius": [
+              "step",
+              ["get", "point_count"],
+              20,
+              100,
+              30,
+              750,
+              40,
+            ],
+          },
         });
 
         map.current.addLayer({
-          id: "listings-circle",
+          id: "cluster-count",
+          type: "symbol",
+          source: "listings",
+          filter: ["has", "point_count"],
+          layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12,
+          },
+        });
+
+        map.current.addLayer({
+          id: "unclustered-point",
           type: "circle",
           source: "listings",
-          class: "marker",
+          filter: ["!", ["has", "point_count"]],
+          paint: {
+            "circle-color": "#11b4da",
+            "circle-radius": 4,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#fff",
+          },
         });
-      });
 
-      map.current.on("move", () => {
-        setLng(map.current.getCenter().lng.toFixed(4.9));
-        setLat(map.current.getCenter().lat.toFixed(52.4));
-        setZoom(map.current.getZoom().toFixed(2));
+        // inspect a cluster on click
+        map.current.on("click", "clusters", (e) => {
+          const features = map.current.queryRenderedFeatures(e.point, {
+            layers: ["clusters"],
+          });
+          const clusterId = features[0].properties.cluster_id;
+          map.current
+            .getSource("listings")
+            .getClusterExpansionZoom(clusterId, (err, zoom) => {
+              if (err) return;
+
+              map.current.easeTo({
+                center: features[0].geometry.coordinates,
+                zoom: zoom,
+              });
+            });
+        });
+
+        // When a click event occurs on a feature in
+        // the unclustered-point layer, open a popup at
+        // the location of the feature, with
+        // description HTML from its properties.
+        map.current.on("click", "unclustered-point", (e) => {
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const hostName = e.features[0].properties.hostName;
+          const id = e.features[0].properties.id;
+          const name = e.features[0].properties.name;
+          const neighbourhood = e.features[0].properties.neighbourhood;
+          const price = e.features[0].properties.price;
+          const reviewScoresRating = e.features[0].properties.reviewScoresRating;
+
+          // Ensure that if the map is zoomed out such that
+          // multiple copies of the feature are visible, the
+          // popup appears over the copy being pointed to.
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(`<b>${name}</b><br>By ${hostName}<br>Price: € ${price}<br>Neighbourhood: ${neighbourhood}<br>Review Score: ${reviewScoresRating}`)
+            .addTo(map.current);
+        });
+
+        map.current.on("mouseenter", "clusters", () => {
+          map.current.getCanvas().style.cursor = "pointer";
+        });
+        map.current.on("mouseleave", "clusters", () => {
+          map.current.getCanvas().style.cursor = "";
+        });
       });
     }
   }, [listingsGeo]);
