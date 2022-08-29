@@ -1,0 +1,25 @@
+.map-container {
+    height: 625px;
+    width: 60%;
+    }
+
+    .mapboxgl-ctrl-bottom-right {
+        display: none;
+     }
+    
+     .marker{
+            font-family: "Montserrat", "Oxygen",
+            "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+            sans-serif;
+            background-color: rgb(255, 255, 255);
+            border-radius: 28px;
+            box-shadow: rgb(0 0 0 / 4%) 0px 0px 0px 1px, rgb(0 0 0 / 18%) 0px 2px 4px;
+            color: rgb(34, 34, 34);
+            height: 28px;
+            padding: 0px 8px;
+            transform: scale(1);
+            transform-origin: 50% 50%;
+            width: fit-content;
+            font-weight: 600;
+          }
+     

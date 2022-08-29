@@ -311,7 +311,7 @@ namespace Server.Models
 
                 entity.Property(e => e.Neighbourhood).HasColumnName("neighbourhood");
 
-                entity.Property(e => e.NumberOfReviews).HasColumnName("number_of_reviews");
+                entity.Property(e => e.ReviewScoresRating).HasColumnName("review_scores_rating");
 
                 entity.Property(e => e.Price).HasColumnName("price");
             });

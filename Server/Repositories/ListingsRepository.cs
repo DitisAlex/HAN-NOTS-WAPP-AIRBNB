@@ -1,6 +1,7 @@
 ﻿using Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Server.Repositories;
 
@@ -24,8 +25,8 @@ public class ListingsRepository : IListingsRepository
             Latitude = listing.Latitude,
             Longitude = listing.Longitude,
             Price = listing.Price,
-            NumberOfReviews = listing.NumberOfReviews
-        }).Take(10).ToListAsync();
+            ReviewScoresRating = listing.ReviewScoresRating
+        }).Take(1000).ToListAsync();
     }
 
     public async Task<Listing?> GetListing(int id)
