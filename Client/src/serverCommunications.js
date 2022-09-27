@@ -43,3 +43,22 @@ export async function getListingsGeo(){
         });
     })
 }
+
+/**
+ * Fetch specific listings by id
+ */
+ export async function getListing(id){
+    return new Promise((resolve, reject) => {
+        axios
+        .get(`https://localhost:7267/listings/${id}`)
+        .then(async function (response) {
+          if (response.data) {
+            resolve(response);
+          };
+        })
+        .catch((e) => {
+          console.log(e);
+          reject(e);
+        });
+    })
+}

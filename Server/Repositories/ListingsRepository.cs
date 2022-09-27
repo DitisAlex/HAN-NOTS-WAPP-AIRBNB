@@ -26,7 +26,7 @@ public class ListingsRepository : IListingsRepository
             Longitude = listing.Longitude,
             Price = listing.Price,
             ReviewScoresRating = listing.ReviewScoresRating
-        }).Take(1000).ToListAsync();
+        }).ToListAsync();
     }
 
     public async Task<Listing?> GetListing(int id)

@@ -1,13 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import "./css/Home.css";
-import { getListingsGeo } from "../serverCommunications.js";
+import { getListingsGeo, getListing } from "../serverCommunications.js";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZGl0aXNhbGV4IiwiYSI6ImNsNmYycmk5ejAwajMzaW82ZmFic2N0NHAifQ.GfrQsDiFIZLNdN1vweHTXQ";
 
 export default function Home(props) {
   const [listingsGeo, setListingsGeo] = useState();
+  const [selectedListingId, setSelectedListingId] = useState();
+  const [currentListing, setCurrentListing] = useState();
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -130,7 +132,8 @@ export default function Home(props) {
           const name = e.features[0].properties.name;
           const neighbourhood = e.features[0].properties.neighbourhood;
           const price = e.features[0].properties.price;
-          const reviewScoresRating = e.features[0].properties.reviewScoresRating;
+          const reviewScoresRating =
+            e.features[0].properties.reviewScoresRating;
 
           // Ensure that if the map is zoomed out such that
           // multiple copies of the feature are visible, the
@@ -139,10 +142,7 @@ export default function Home(props) {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
           }
 
-          new mapboxgl.Popup()
-            .setLngLat(coordinates)
-            .setHTML(`<b>${name}</b><br>By ${hostName}<br>Price: € ${price}<br>Neighbourhood: ${neighbourhood}<br>Review Score: ${reviewScoresRating}`)
-            .addTo(map.current);
+          setSelectedListingId(e.features[0].properties.id);
         });
 
         map.current.on("mouseenter", "clusters", () => {
@@ -155,9 +155,39 @@ export default function Home(props) {
     }
   }, [listingsGeo]);
 
+  useEffect(() => {
+    if (selectedListingId) {
+      getListing(selectedListingId).then((response) => {
+        console.log(response.data)
+        setCurrentListing(response.data);
+      });
+    }
+  }, [selectedListingId]);
+
   return (
-    <div>
-      <div ref={mapContainer} className="map-container" />
+    <div className="row">
+      <div ref={mapContainer} className="col-7 map-container" />
+      <div className="col">
+        {currentListing && (
+          <div>
+            <h4>{currentListing.name}</h4>
+            <p>Hosted by {currentListing.hostName} for {currentListing.price}</p>
+            <div>
+              <img
+                src={currentListing.thumbnailUrl}
+                alt={currentListing.name}
+                className="rounded"
+              />
+            </div><hr/>
+            <h5>Description:</h5>
+            <p>{currentListing.summary}</p><hr/>
+            <h5>Extra Information:</h5>
+            <p>- {currentListing.bedrooms} bedrooms with {currentListing.beds} beds</p>
+            <p>- Rated {currentListing.reviewScoresRating} out of 100</p>
+            <p>- Neighbourhood: {currentListing.neighbourhoodCleansed}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

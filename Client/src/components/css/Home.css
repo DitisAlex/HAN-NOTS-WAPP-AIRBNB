@@ -1,6 +1,6 @@
 .map-container {
     height: 625px;
-    width: 60%;
+    margin-right: 20px;
     }
 
     .mapboxgl-ctrl-bottom-right {
@@ -22,4 +22,5 @@
             width: fit-content;
             font-weight: 600;
           }
+
      
