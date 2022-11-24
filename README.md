@@ -5,6 +5,7 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 ### Back-End:
 - [x] Create ASP.NET Core API
 - [x] Routes for Listings (Summarized)
+- [ ] First Performance test (Listing unsummarized)
 - [ ] Implement performance: AsNoTracking, Indexing & Redis Cache
 - [ ] Fix top5 OWasp issues
 - [ ] Redis Caching
