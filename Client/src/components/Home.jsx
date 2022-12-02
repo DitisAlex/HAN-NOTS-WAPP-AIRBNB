@@ -120,35 +120,19 @@ export default function Home(props) {
               });
             });
         });
-
-        // When a click event occurs on a feature in
-        // the unclustered-point layer, open a popup at
-        // the location of the feature, with
-        // description HTML from its properties.
         map.current.on("click", "unclustered-point", (e) => {
-          const coordinates = e.features[0].geometry.coordinates.slice();
-          const hostName = e.features[0].properties.hostName;
-          const id = e.features[0].properties.id;
-          const name = e.features[0].properties.name;
-          const neighbourhood = e.features[0].properties.neighbourhood;
-          const price = e.features[0].properties.price;
-          const reviewScoresRating =
-            e.features[0].properties.reviewScoresRating;
-
-          // Ensure that if the map is zoomed out such that
-          // multiple copies of the feature are visible, the
-          // popup appears over the copy being pointed to.
-          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-          }
-
           setSelectedListingId(e.features[0].properties.id);
         });
-
+        map.current.on("mouseenter", "unclustered-point", () => {
+          map.current.getCanvas().style.cursor = "pointer";
+        });
         map.current.on("mouseenter", "clusters", () => {
           map.current.getCanvas().style.cursor = "pointer";
         });
         map.current.on("mouseleave", "clusters", () => {
+          map.current.getCanvas().style.cursor = "";
+        });
+        map.current.on("mouseleave", "unclustered-point", () => {
           map.current.getCanvas().style.cursor = "";
         });
       });
