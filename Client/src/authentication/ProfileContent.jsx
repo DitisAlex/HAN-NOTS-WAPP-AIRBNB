@@ -1,31 +1,3 @@
-import React, { useState } from "react";
-import { PageLayout } from "./PageLayout";
-import Home from "./Home";
-import {
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-  useMsal,
-} from "@azure/msal-react";
-import { loginRequest } from "../authentication/authConfig";
-import Button from "react-bootstrap/Button";
-
-export default function App() {
-  return (
-    <div>
-      <PageLayout>
-        <AuthenticatedTemplate>
-          <p>You are signed in!</p>
-          <ProfileContent />
-          <Home />
-        </AuthenticatedTemplate>
-        <UnauthenticatedTemplate>
-          <p>You are not signed in! Please sign in.</p>
-        </UnauthenticatedTemplate>
-      </PageLayout>
-    </div>
-  );
-}
-
 function ProfileContent() {
   const { instance, accounts, inProgress } = useMsal();
   const [accessToken, setAccessToken] = useState(null);
@@ -42,7 +14,6 @@ function ProfileContent() {
     instance
       .acquireTokenSilent(request)
       .then((response) => {
-        console.log(response.accessToken);
         setAccessToken(response.accessToken);
       })
       .catch((e) => {

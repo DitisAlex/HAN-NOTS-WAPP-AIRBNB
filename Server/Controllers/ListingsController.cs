@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Server.Models;
 using Server.Repositories;
 
 namespace Server.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ListingsController : ControllerBase
