@@ -67,7 +67,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">C:\Users\Redux Gamer\Desktop\JMeter results\Loadtest8.csv</stringProp>
+            <stringProp name="filename">C:\Users\Redux Gamer\Desktop\JMeter results\Loadtest9.csv</stringProp>
           </ResultCollector>
           <hashTree/>
           <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.ResponseCodesPerSecondGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="jp@gc - Response Codes per Second" enabled="true">
