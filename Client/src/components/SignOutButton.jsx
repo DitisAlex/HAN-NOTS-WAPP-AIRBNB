@@ -1,10 +1,7 @@
 import React from "react";
 import { useMsal } from "@azure/msal-react";
-import Button from "react-bootstrap/Button";
+import Nav from "react-bootstrap/Nav";
 
-/**
- * Renders a button which, when selected, will open a popup for logout
- */
 export const SignOutButton = () => {
   const { instance } = useMsal();
 
@@ -17,13 +14,5 @@ export const SignOutButton = () => {
     }
   };
 
-  return (
-    <Button
-      variant="secondary"
-      className="ml-auto"
-      onClick={() => handleLogout("popup")}
-    >
-      Sign out using Popup
-    </Button>
-  );
+  return <Nav.Link onClick={() => handleLogout("popup")}>Sign Out</Nav.Link>;
 };
