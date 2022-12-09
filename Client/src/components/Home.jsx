@@ -6,7 +6,7 @@ import { getListingsGeo, getListing } from "../serverCommunications.js";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZGl0aXNhbGV4IiwiYSI6ImNsNmYycmk5ejAwajMzaW82ZmFic2N0NHAifQ.GfrQsDiFIZLNdN1vweHTXQ";
 
-export default function Home({ accessToken }) {
+export default function Home(props) {
   const [listingsGeo, setListingsGeo] = useState();
   const [selectedListingId, setSelectedListingId] = useState();
   const [currentListing, setCurrentListing] = useState();
@@ -29,9 +29,7 @@ export default function Home({ accessToken }) {
 
   useEffect(() => {
     async function fetchListingsGeo() {
-      console.log("token:");
-      console.log(accessToken);
-      let response = await getListingsGeo(accessToken);
+      let response = await getListingsGeo();
       setListingsGeo(response);
     }
     fetchListingsGeo();
