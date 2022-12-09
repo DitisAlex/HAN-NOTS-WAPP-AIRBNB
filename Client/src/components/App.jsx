@@ -8,6 +8,7 @@ import {
 } from "@azure/msal-react";
 import { loginRequest } from "../authentication/authConfig";
 import Button from "react-bootstrap/Button";
+import { accessToken } from "mapbox-gl";
 
 export default function App() {
   return (
@@ -16,7 +17,7 @@ export default function App() {
         <AuthenticatedTemplate>
           <p>You are signed in!</p>
           <ProfileContent />
-          <Home />
+          <Home accessToken={accessToken} />
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
           <p>You are not signed in! Please sign in.</p>

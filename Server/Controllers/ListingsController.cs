@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using Server.Models;
 using Server.Repositories;
 
 namespace Server.Controllers
 {
-    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ListingsController : ControllerBase
@@ -19,6 +19,7 @@ namespace Server.Controllers
 
         // GET: api/Listings
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings()
         {
             return await _listingsRepository.GetListings();

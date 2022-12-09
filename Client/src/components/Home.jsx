@@ -6,7 +6,7 @@ import { getListingsGeo, getListing } from "../serverCommunications.js";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZGl0aXNhbGV4IiwiYSI6ImNsNmYycmk5ejAwajMzaW82ZmFic2N0NHAifQ.GfrQsDiFIZLNdN1vweHTXQ";
 
-export default function Home(props) {
+export default function Home({ accessToken }) {
   const [listingsGeo, setListingsGeo] = useState();
   const [selectedListingId, setSelectedListingId] = useState();
   const [currentListing, setCurrentListing] = useState();
@@ -29,7 +29,9 @@ export default function Home(props) {
 
   useEffect(() => {
     async function fetchListingsGeo() {
-      let response = await getListingsGeo();
+      console.log("token:");
+      console.log(accessToken);
+      let response = await getListingsGeo(accessToken);
       setListingsGeo(response);
     }
     fetchListingsGeo();
@@ -142,7 +144,7 @@ export default function Home(props) {
   useEffect(() => {
     if (selectedListingId) {
       getListing(selectedListingId).then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         setCurrentListing(response.data);
       });
     }
@@ -155,18 +157,25 @@ export default function Home(props) {
         {currentListing && (
           <div>
             <h4>{currentListing.name}</h4>
-            <p>Hosted by {currentListing.hostName} for {currentListing.price}</p>
+            <p>
+              Hosted by {currentListing.hostName} for {currentListing.price}
+            </p>
             <div>
               <img
                 src={currentListing.thumbnailUrl}
                 alt={currentListing.name}
                 className="rounded"
               />
-            </div><hr/>
+            </div>
+            <hr />
             <h5>Description:</h5>
-            <p>{currentListing.summary}</p><hr/>
+            <p>{currentListing.summary}</p>
+            <hr />
             <h5>Extra Information:</h5>
-            <p>- {currentListing.bedrooms} bedrooms with {currentListing.beds} beds</p>
+            <p>
+              - {currentListing.bedrooms} bedrooms with {currentListing.beds}{" "}
+              beds
+            </p>
             <p>- Rated {currentListing.reviewScoresRating} out of 100</p>
             <p>- Neighbourhood: {currentListing.neighbourhoodCleansed}</p>
           </div>
