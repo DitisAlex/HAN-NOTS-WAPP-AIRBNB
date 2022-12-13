@@ -12,7 +12,6 @@ export default function Navbars(props) {
 
   const { instance, accounts } = useMsal();
   const account = useAccount(accounts[0] || {});
-  const [token, setToken] = useState("");
 
   useEffect(() => {
     const request = {
@@ -20,11 +19,7 @@ export default function Navbars(props) {
       account: accounts[0],
     };
     if (account) {
-      instance.acquireTokenSilent(request).then((response) => {
-        setToken(response.accessToken);
-        console.log(response);
-        console.log(response.accessToken);
-      });
+      instance.acquireTokenSilent(request);
     }
   }, [account, instance]);
 
@@ -36,7 +31,7 @@ export default function Navbars(props) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/">Map</Nav.Link>
-            <Nav.Link href="#home">Charts</Nav.Link>
+            <Nav.Link href="/charts">Charts</Nav.Link>
           </Nav>
         </Navbar.Collapse>
         <Navbar.Collapse className="justify-content-end">

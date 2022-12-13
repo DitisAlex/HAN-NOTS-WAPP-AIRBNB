@@ -142,7 +142,6 @@ export default function Home(props) {
   useEffect(() => {
     if (selectedListingId) {
       getListing(selectedListingId).then((response) => {
-        console.log(response.data);
         setCurrentListing(response.data);
       });
     }
