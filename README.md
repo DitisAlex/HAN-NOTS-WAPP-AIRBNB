@@ -6,6 +6,8 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 - [x] Create ASP.NET Core API
 - [x] Routes for Listings (Summarized)
 - [x] First Performance test (Listing unsummarized)
+- [x] Routes for statistics
+- [x] Authorization by roles
 - [ ] Implement performance: AsNoTracking, Indexing & Redis Cache
 - [ ] Fix top5 OWasp issues
 - [ ] Redis Caching
@@ -14,9 +16,11 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 ### Front-End:
 - [x] Create React Front-End
 - [x] Implement Mapbox -> Clustering -> Clickable coordinates
-- [ ] Mapbox filtering (front-end)
+- [ ] Mapbox filtering (price/neighboorhood/reviews)
 - [x] B2c directory for admin page
-- [ ] Implement Charts.js -> Statistics page
+- [x] Added charts page with authorized endpoints
+- [ ] Implement Charts.js for statistics
+- [ ] Performance mapbox verbeteren (erg laggy met clusters nog)
 
 ### Documentation:
 - [ ] Get performance before/after (JMeter)
