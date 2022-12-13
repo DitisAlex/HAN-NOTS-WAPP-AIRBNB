@@ -19,7 +19,7 @@ namespace Server.Controllers
 
         // GET: api/Listings
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "MyAppAdministratorsGroup")]
         public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings()
         {
             return await _listingsRepository.GetListings();

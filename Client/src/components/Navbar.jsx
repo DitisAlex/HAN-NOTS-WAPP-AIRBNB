@@ -21,8 +21,9 @@ export default function Navbars(props) {
     };
     if (account) {
       instance.acquireTokenSilent(request).then((response) => {
-        setToken(response.token);
+        setToken(response.accessToken);
         console.log(response);
+        console.log(response.accessToken);
       });
     }
   }, [account, instance]);
