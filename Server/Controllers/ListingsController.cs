@@ -19,7 +19,6 @@ namespace Server.Controllers
 
         // GET: api/Listings
         [HttpGet]
-        [Authorize(Roles = "MyAppAdministratorsGroup")]
         public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings()
         {
             return await _listingsRepository.GetListings();
@@ -35,7 +34,17 @@ namespace Server.Controllers
             {
                 return NotFound();
             }
-            return listing;
+            return Ok(listing);
+        }
+
+        [HttpGet]
+        [Route("stats")]
+        [Authorize(Roles = "MyAppAdministratorsGroup")]
+        public async Task<ActionResult<List<Stats>>> GetStats()
+        {
+            var stats = await _listingsRepository.GetStats();
+
+            return Ok(stats);
         }
     }
 }

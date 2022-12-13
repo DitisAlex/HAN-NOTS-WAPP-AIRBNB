@@ -7,5 +7,7 @@ public interface IListingsRepository
 {
     Task<ActionResult<IEnumerable<SummaryListing>>> GetListings();
     Task<Listing?> GetListing(int id);
+
+    Task<Stats?> GetStats();
 }
 
