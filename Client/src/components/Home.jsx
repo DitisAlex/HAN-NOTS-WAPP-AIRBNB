@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import "./css/Home.css";
 import { getListingsGeo, getListing } from "../serverCommunications.js";
+import Button from "react-bootstrap/Button";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZGl0aXNhbGV4IiwiYSI6ImNsNmYycmk5ejAwajMzaW82ZmFic2N0NHAifQ.GfrQsDiFIZLNdN1vweHTXQ";
@@ -37,7 +38,6 @@ export default function Home(props) {
 
   useEffect(() => {
     if (listingsGeo && listingsGeo.features.length) {
-      console.log(listingsGeo);
       map.current.on("load", () => {
         if (!map.current.getSource("listings")) {
           map.current.addSource("listings", {
@@ -153,7 +153,20 @@ export default function Home(props) {
       <div className="col">
         {currentListing && (
           <div>
-            <h4>{currentListing.name}</h4>
+            <div className="row">
+              <h4 className="col-md-10">{currentListing.name}</h4>
+              <Button
+                className="col-md-1"
+                size="sm"
+                variant="secondary"
+                onClick={() => {
+                  setCurrentListing();
+                }}
+              >
+                X
+              </Button>
+            </div>
+
             <p>
               Hosted by {currentListing.hostName} for {currentListing.price}
             </p>
@@ -173,8 +186,14 @@ export default function Home(props) {
               - {currentListing.bedrooms} bedrooms with {currentListing.beds}{" "}
               beds
             </p>
-            <p>- Rated {currentListing.reviewScoresRating} out of 100</p>
+            {currentListing.reviewScoresRating ? (
+              <p>- Rated {currentListing.reviewScoresRating} out of 100</p>
+            ) : (
+              ""
+            )}
             <p>- Neighbourhood: {currentListing.neighbourhoodCleansed}</p>
+            <p>- Minimum nights: {currentListing.minimumNights}</p>
+            <p>- Maximum nights: {currentListing.maximumNights}</p>
           </div>
         )}
       </div>
