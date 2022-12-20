@@ -12,7 +12,7 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 - [ ] Implement performance: AsNoTracking, Indexing & Redis Cache
 - [ ] Fix top5 OWasp issues
 - [ ] Redis Caching
-- [ ] Deploy on Azure -> App Service
+- [ ] Deploy on Azure -> App Service (tot 7/1/23 subscription)
 
 ### Front-End:
 - [x] Create React Front-End
