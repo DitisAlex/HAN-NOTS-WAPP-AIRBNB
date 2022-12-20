@@ -6,6 +6,7 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 - [x] Create ASP.NET Core API
 - [x] Routes for Listings (Summarized)
 - [x] First Performance test (Listing unsummarized)
+- [ ] Nulmeting voor statistic route
 - [x] Routes for statistics
 - [x] Authorization by roles
 - [ ] Implement performance: AsNoTracking, Indexing & Redis Cache
