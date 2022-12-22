@@ -3,10 +3,11 @@ const axios = require("axios");
 /**
  * Fetch all listings and transform into geoJSON
  */
-export async function getListingsGeo() {
+export async function getListingsGeo(params) {
+  console.log(params);
   return new Promise((resolve, reject) => {
     axios
-      .get("https://localhost:7267/listings")
+      .get("https://localhost:7267/listings", { params })
       .then(async function(response) {
         if (response.data) {
           let geoJSON = {
@@ -82,6 +83,25 @@ export async function getStats(token) {
   return new Promise((resolve, reject) => {
     axios
       .get(`https://localhost:7267/listings/stats`, config)
+      .then(async function(response) {
+        if (response.data) {
+          resolve(response);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
+  });
+}
+
+/**
+ * Fetch all neighbourhoods
+ */
+export async function getNeighbourhoods() {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`https://localhost:7267/listings/neighbourhoods`)
       .then(async function(response) {
         if (response.data) {
           resolve(response);

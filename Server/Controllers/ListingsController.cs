@@ -19,9 +19,9 @@ namespace Server.Controllers
 
         // GET: api/Listings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings()
+        public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings([FromQuery] FilterParameters parameters)
         {
-            return await _listingsRepository.GetListings();
+            return await _listingsRepository.GetListings(parameters);
         }
 
         // GET: api/Listings/2818
@@ -35,6 +35,14 @@ namespace Server.Controllers
                 return NotFound();
             }
             return Ok(listing);
+        }
+
+        [HttpGet]
+        [Route("neighbourhoods")]
+        public async Task<ActionResult<Neighbourhoods>> GetNeighbourhoods()
+        {
+            var neighbourhoods = await _listingsRepository.GetNeighbourhood();
+            return Ok(neighbourhoods);
         }
 
         [HttpGet]

@@ -14,9 +14,9 @@ public class ListingsRepository : IListingsRepository
 		_context = context;
 	}
 
-    public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings()
+    public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings(FilterParameters parameters)
     {
-        return await _context.Listings.Select(listing => new SummaryListing
+        IQueryable<SummaryListing> listings = _context.Listings.Select(listing => new SummaryListing
         {
             Id = listing.Id,
             Name = listing.Name,
@@ -26,12 +26,62 @@ public class ListingsRepository : IListingsRepository
             Longitude = listing.Longitude,
             Price = listing.Price,
             ReviewScoresRating = listing.ReviewScoresRating
-        }).ToListAsync();
+        });
+
+        if (!string.IsNullOrEmpty(parameters.Neighbourhood))
+        {
+            listings = listings.Where(listing => listing.Neighbourhood == parameters.Neighbourhood);
+        }
+
+        if (parameters.PriceFrom.HasValue)
+        {
+            listings = listings.Where(listing => Convert.ToInt32(listing.Price) >= Convert.ToInt32(parameters.PriceFrom));
+        }
+
+        if (parameters.PriceTo.HasValue)
+        {
+            listings = listings.Where(listing => Convert.ToInt32(listing.Price) <= Convert.ToInt32(parameters.PriceTo));
+        }
+
+        if (parameters.ReviewsFrom.HasValue)
+        {
+            listings = listings.Where(listing => listing.ReviewScoresRating >= parameters.ReviewsFrom);
+        }
+
+        if (parameters.ReviewsTo.HasValue)
+        {
+            listings = listings.Where(listing => listing.ReviewScoresRating <= parameters.ReviewsTo);
+        }
+
+        return await listings.ToListAsync();
     }
 
     public async Task<Listing?> GetListing(int id)
     {
         return await _context.Listings.FindAsync(id);
+    }
+
+    public async Task<Neighbourhoods?> GetNeighbourhood()
+    {
+        var neighbourhoods = new Neighbourhoods();
+        neighbourhoods.AllNeighbourhoods = new List<AllNeighbourhoods>();
+
+        var neighbourhoodList = await _context.Listings
+            .GroupBy(l => l.NeighbourhoodCleansed)
+            .Select(g => new {
+                Neighbourhood = g.Key ?? "Unknown",
+            })
+            .ToListAsync();
+
+        neighbourhoodList.ForEach(h =>
+        {
+            neighbourhoods.AllNeighbourhoods.Add(new AllNeighbourhoods
+            {
+                Name = h.Neighbourhood
+            });
+        });
+
+        return neighbourhoods;
     }
 
     public async Task<Stats?> GetStats()
