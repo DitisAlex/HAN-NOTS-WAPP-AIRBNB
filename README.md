@@ -17,7 +17,7 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 ### Front-End:
 - [x] Create React Front-End
 - [x] Implement Mapbox -> Clustering -> Clickable coordinates
-- [ ] Mapbox filtering (price/neighboorhood/reviews)
+- [x] Mapbox filtering (price/neighboorhood/reviews)
 - [x] B2c directory for admin page
 - [x] Added charts page with authorized endpoints
 - [x] Implement Charts.js for statistics
