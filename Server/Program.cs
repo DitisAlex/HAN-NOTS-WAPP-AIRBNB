@@ -35,6 +35,11 @@ builder.Services.AddDbContext<AirBNBContext>(options => {
 }
 );
 
+builder.Services.AddDistributedRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("AzureRedisConnection");
+});
+
 builder.Services.AddScoped<IListingsRepository, ListingsRepository>();
 
 builder.Services.AddEndpointsApiExplorer();

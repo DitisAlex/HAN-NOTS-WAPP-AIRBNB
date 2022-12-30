@@ -14,7 +14,7 @@ public class ListingsRepository : IListingsRepository
 		_context = context;
 	}
 
-    public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings(FilterParameters parameters)
+    public async Task<ActionResult<List<SummaryListing>>> GetListings(FilterParameters parameters)
     {
         IQueryable<SummaryListing> listings = _context.Listings.Select(listing => new SummaryListing
         {

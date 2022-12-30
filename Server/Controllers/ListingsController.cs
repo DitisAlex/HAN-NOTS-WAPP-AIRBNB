@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Identity.Web.Resource;
+using Newtonsoft.Json;
 using Server.Models;
 using Server.Repositories;
+using System.Text;
 
 namespace Server.Controllers
 {
@@ -11,17 +14,60 @@ namespace Server.Controllers
     public class ListingsController : ControllerBase
     {
         private readonly IListingsRepository _listingsRepository;
+        private readonly IDistributedCache _cache;
 
-        public ListingsController(IListingsRepository listingsRepository)
+        public ListingsController(IListingsRepository listingsRepository, IDistributedCache cache)
         {
             _listingsRepository = listingsRepository;
+            _cache = cache;
         }
 
         // GET: api/Listings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SummaryListing>>> GetListings([FromQuery] FilterParameters parameters)
+        public async Task<ActionResult<List<SummaryListing>>> GetListings([FromQuery] FilterParameters parameters)
         {
-            return await _listingsRepository.GetListings(parameters);
+            StringBuilder cacheKey = new StringBuilder("listings", 50);
+
+            if (parameters.Neighbourhood != null)
+            {
+                cacheKey.Append("-neighbourhood=" + parameters.Neighbourhood);
+            }
+            if (parameters.PriceFrom != null)
+            {
+                cacheKey.Append("-priceFrom=" + parameters.PriceFrom);
+            }
+            if (parameters.PriceTo != null)
+            {
+                cacheKey.Append("-priceTo=" + parameters.PriceTo);
+            }
+            if (parameters.ReviewsFrom != null)
+            {
+                cacheKey.Append("-reviewsFrom=" + parameters.ReviewsFrom);
+            }
+            if (parameters.ReviewsTo != null)
+            {
+                cacheKey.Append("-reviewsTo=" + parameters.ReviewsTo);
+            }
+
+            Console.WriteLine(cacheKey);
+
+            var cachedListings = await _cache.GetStringAsync(cacheKey.ToString());
+
+            if(cachedListings != null)
+            {
+                Console.WriteLine("Found in cache!");
+                return Ok(JsonConvert.DeserializeObject(cachedListings));
+            } else
+            {
+                var listings = await _listingsRepository.GetListings(parameters);
+
+                var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
+
+                await _cache.SetStringAsync(cacheKey.ToString(), JsonConvert.SerializeObject(cachedListings), cacheEntryOptions);
+                Console.WriteLine("Set in cache!");
+
+                return Ok(listings);
+            }
         }
 
         // GET: api/Listings/2818
@@ -47,6 +93,7 @@ namespace Server.Controllers
 
         [HttpGet]
         [Route("stats")]
+        [AllowAnonymous]
         [Authorize(Roles = "MyAppAdministratorsGroup")]
         public async Task<ActionResult<List<Stats>>> GetStats()
         {
