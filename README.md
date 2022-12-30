@@ -21,7 +21,7 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 - [x] B2c directory for admin page
 - [x] Added charts page with authorized endpoints
 - [x] Implement Charts.js for statistics
-- [ ] Performance mapbox verbeteren (erg laggy met clusters nog)
+- [x] Performance mapbox verbeteren (erg laggy met clusters nog) -> cause fixed height (ignore)
 
 ### Documentation:
 - [ ] Get performance before/after (JMeter)
