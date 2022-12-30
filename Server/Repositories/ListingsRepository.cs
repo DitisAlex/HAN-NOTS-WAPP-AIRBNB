@@ -35,12 +35,13 @@ public class ListingsRepository : IListingsRepository
 
         if (parameters.PriceFrom.HasValue)
         {
-            listings = listings.Where(listing => Convert.ToInt32(listing.Price) >= Convert.ToInt32(parameters.PriceFrom));
+            listings = listings.Where(listing => listing.Price >= parameters.PriceFrom);
         }
 
         if (parameters.PriceTo.HasValue)
         {
-            listings = listings.Where(listing => Convert.ToInt32(listing.Price) <= Convert.ToInt32(parameters.PriceTo));
+            
+            listings = listings.Where(listing => listing.Price <= parameters.PriceTo);
         }
 
         if (parameters.ReviewsFrom.HasValue)

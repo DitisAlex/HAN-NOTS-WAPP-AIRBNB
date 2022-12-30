@@ -4,7 +4,6 @@ const axios = require("axios");
  * Fetch all listings and transform into geoJSON
  */
 export async function getListingsGeo(params) {
-  console.log(params);
   return new Promise((resolve, reject) => {
     axios
       .get("https://localhost:7267/listings", { params })

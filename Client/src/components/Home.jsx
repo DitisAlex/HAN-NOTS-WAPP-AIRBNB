@@ -17,7 +17,7 @@ export default function Home(props) {
   const [selectedListingId, setSelectedListingId] = useState();
   const [currentListing, setCurrentListing] = useState();
   const [minPrice, setMinPrice] = useState(1);
-  const [maxPrice, setMaxPrice] = useState(1000);
+  const [maxPrice, setMaxPrice] = useState(5000);
   const [neighbourhoods, setNeighbourhoods] = useState();
   const [selectedNeighbourhood, setSelectedNeighbourhood] = useState("");
   const [minReviewScore, setMinReviewScore] = useState(1);
@@ -63,7 +63,6 @@ export default function Home(props) {
 
   useEffect(() => {
     if (listingsGeo && listingsGeo.features.length) {
-      console.log(listingsGeo);
       map.current.on("load", () => {
         if (!map.current.getSource("listings")) {
           map.current.addSource("listings", {
@@ -196,7 +195,8 @@ export default function Home(props) {
               </div>
 
               <p>
-                Hosted by {currentListing.hostName} for {currentListing.price}
+                Hosted by {currentListing.hostName} for ${currentListing.price}
+                /night.
               </p>
               <div>
                 <img
@@ -236,7 +236,7 @@ export default function Home(props) {
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
             min={1}
-            max={999}
+            max={5000}
           />
           <br />
           <Form.Label column sm="6">
@@ -246,7 +246,7 @@ export default function Home(props) {
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
             min={minPrice}
-            max={1000}
+            max={5000}
           />
         </div>
         <div className="col">
@@ -298,7 +298,7 @@ export default function Home(props) {
               if (minPrice != 1) {
                 params.PriceFrom = minPrice;
               }
-              if (maxPrice != 1000) {
+              if (maxPrice != 5000) {
                 params.PriceTo = maxPrice;
               }
               if (selectedNeighbourhood) {
@@ -326,7 +326,7 @@ export default function Home(props) {
             className="m-2"
             onClick={() => {
               setMinPrice(1);
-              setMaxPrice(1000);
+              setMaxPrice(5000);
               setSelectedNeighbourhood("");
               setMinReviewScore(1);
               setMaxReviewScore(100);
