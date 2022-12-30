@@ -27,7 +27,7 @@ export default function Home(props) {
   const map = useRef(null);
   const [lng, setLng] = useState(4.89707);
   const [lat, setLat] = useState(52.377956);
-  const [zoom, setZoom] = useState(9);
+  const [zoom, setZoom] = useState(10);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -69,12 +69,10 @@ export default function Home(props) {
             type: "geojson",
             data: listingsGeo,
             cluster: true,
-            clusterMaxZoom: 12, // Max zoom to cluster points on
-            clusterRadius: 40, // Radius of each cluster when clustering points (defaults to 50)
+            clusterMaxZoom: 12,
+            clusterRadius: 40,
           });
         }
-
-        map.current.getSource("listings").setData(listingsGeo);
 
         map.current.addLayer({
           id: "clusters",
@@ -128,7 +126,6 @@ export default function Home(props) {
           },
         });
 
-        // inspect a cluster on click
         map.current.on("click", "clusters", (e) => {
           const features = map.current.queryRenderedFeatures(e.point, {
             layers: ["clusters"],

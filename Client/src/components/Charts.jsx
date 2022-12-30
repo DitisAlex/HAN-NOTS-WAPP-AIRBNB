@@ -214,22 +214,22 @@ export default function Charts(props) {
               "Fetching Graph Data..."
             ) : (
               <div>
-                <div class="row justify-content-md-center">
-                  <div class="col-5">
+                <div className="row justify-content-md-center">
+                  <div className="col-5">
                     <Line options={graphOptions} data={totalListingsData} />
                   </div>
-                  <div class="col-5">
+                  <div className="col-5">
                     <Line options={graphOptions} data={reviewScoreData} />
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-5">
+                <div className="row">
+                  <div className="col-5">
                     <Line options={graphOptions} data={availabilityData} />
                   </div>
-                  <div class="col-3">
+                  <div className="col-3">
                     <Pie options={graphOptions} data={propertyData} />
                   </div>
-                  <div class="col-3">
+                  <div className="col-3">
                     <Bar options={graphOptions} data={totalData} />
                   </div>
                 </div>
@@ -244,7 +244,7 @@ export default function Charts(props) {
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <div className="container">
-          You must be signed before you can view this page!
+          You must be signed in before you can view this page!
         </div>
       </UnauthenticatedTemplate>
     </div>

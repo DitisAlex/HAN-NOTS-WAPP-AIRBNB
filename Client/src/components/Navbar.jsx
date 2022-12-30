@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useIsAuthenticated, useMsal, useAccount } from "@azure/msal-react";
@@ -25,30 +24,28 @@ export default function Navbars(props) {
 
   return (
     <Navbar bg="light" expand="lg">
-      <Container>
-        <Navbar.Brand>Inside AirBNB</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/">Map</Nav.Link>
-            <Nav.Link href="/charts">Charts</Nav.Link>
+      <Navbar.Brand>Inside AirBNB</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="me-auto">
+          <Nav.Link href="/">Map</Nav.Link>
+          <Nav.Link href="/charts">Charts</Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+      <Navbar.Collapse className="justify-content-end">
+        {isAuthenticated ? (
+          <Nav>
+            <Navbar.Text>
+              Welcome, {account ? account.username : ""}
+            </Navbar.Text>
+            <SignOutButton />
           </Nav>
-        </Navbar.Collapse>
-        <Navbar.Collapse className="justify-content-end">
-          {isAuthenticated ? (
-            <Nav>
-              <Navbar.Text>
-                Welcome, {account ? account.username : ""}
-              </Navbar.Text>
-              <SignOutButton />
-            </Nav>
-          ) : (
-            <Nav>
-              <SignInButton />
-            </Nav>
-          )}
-        </Navbar.Collapse>
-      </Container>
+        ) : (
+          <Nav>
+            <SignInButton />
+          </Nav>
+        )}
+      </Navbar.Collapse>
     </Navbar>
   );
 }

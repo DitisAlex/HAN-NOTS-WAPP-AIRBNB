@@ -9,7 +9,7 @@ export const SignOutButton = () => {
     if (logoutType === "popup") {
       instance.logoutPopup({
         postLogoutRedirectUri: "/",
-        mainWindowRedirectUri: "/", // redirects the top level app after logout
+        mainWindowRedirectUri: "/",
       });
     }
   };
