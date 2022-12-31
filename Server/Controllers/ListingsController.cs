@@ -24,7 +24,7 @@ namespace Server.Controllers
 
         // GET: api/Listings
         [HttpGet]
-        public async Task<ActionResult<List<SummaryListing>>> GetListings([FromQuery] FilterParameters parameters)
+        public async Task<List<SummaryListing>> GetListings([FromQuery] FilterParameters parameters)
         {
             StringBuilder cacheKey = new StringBuilder("listings", 50);
 
@@ -53,21 +53,20 @@ namespace Server.Controllers
 
             var cachedListings = await _cache.GetStringAsync(cacheKey.ToString());
 
-            if(cachedListings != null)
+            if (cachedListings != null)
             {
                 Console.WriteLine("Found in cache!");
-                return Ok(JsonConvert.DeserializeObject(cachedListings));
-            } else
-            {
+                
+                return JsonConvert.DeserializeObject<List<SummaryListing>>(cachedListings);
+            }
                 var listings = await _listingsRepository.GetListings(parameters);
 
                 var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
-
-                await _cache.SetStringAsync(cacheKey.ToString(), JsonConvert.SerializeObject(cachedListings), cacheEntryOptions);
+                
+                await _cache.SetStringAsync(cacheKey.ToString(), JsonConvert.SerializeObject(listings), cacheEntryOptions);
                 Console.WriteLine("Set in cache!");
 
-                return Ok(listings);
-            }
+                return listings;
         }
 
         // GET: api/Listings/2818

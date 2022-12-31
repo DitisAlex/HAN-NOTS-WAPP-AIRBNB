@@ -5,7 +5,7 @@ namespace Server.Repositories;
 
 public interface IListingsRepository
 {
-    Task<ActionResult<List<SummaryListing>>> GetListings(FilterParameters parameters);
+    Task<List<SummaryListing>> GetListings(FilterParameters parameters);
     Task<Listing?> GetListing(int id);
     Task<Neighbourhoods?> GetNeighbourhood();
     Task<Stats?> GetStats();

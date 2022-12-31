@@ -14,7 +14,7 @@ public class ListingsRepository : IListingsRepository
 		_context = context;
 	}
 
-    public async Task<ActionResult<List<SummaryListing>>> GetListings(FilterParameters parameters)
+    public async Task<List<SummaryListing>> GetListings(FilterParameters parameters)
     {
         IQueryable<SummaryListing> listings = _context.Listings.Select(listing => new SummaryListing
         {
@@ -54,7 +54,7 @@ public class ListingsRepository : IListingsRepository
             listings = listings.Where(listing => listing.ReviewScoresRating <= parameters.ReviewsTo);
         }
 
-        return await listings.ToListAsync();
+        return await listings.Take(100).ToListAsync();
     }
 
     public async Task<Listing?> GetListing(int id)
