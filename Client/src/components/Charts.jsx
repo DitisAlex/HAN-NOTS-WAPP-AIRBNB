@@ -211,7 +211,9 @@ export default function Charts(props) {
         account.idTokenClaims.roles[0] == "MyAppAdministratorsGroup" ? (
           <div>
             {isLoading ? (
-              "Fetching Graph Data..."
+              <h4 className="d-flex justify-content-center">
+                Fetching Graph Data...
+              </h4>
             ) : (
               <div>
                 <div className="row justify-content-md-center">
@@ -237,15 +239,15 @@ export default function Charts(props) {
             )}
           </div>
         ) : (
-          <div className="container">
+          <h4 className="d-flex justify-content-center">
             You do not have enough permissions to view this page!
-          </div>
+          </h4>
         )}
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
-        <div className="container">
+        <h4 className="d-flex justify-content-center">
           You must be signed in before you can view this page!
-        </div>
+        </h4>
       </UnauthenticatedTemplate>
     </div>
   );

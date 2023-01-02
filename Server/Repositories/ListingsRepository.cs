@@ -54,7 +54,7 @@ public class ListingsRepository : IListingsRepository
             listings = listings.Where(listing => listing.ReviewScoresRating <= parameters.ReviewsTo);
         }
 
-        return await listings.Take(100).ToListAsync();
+        return await listings.ToListAsync();
     }
 
     public async Task<Listing?> GetListing(int id)

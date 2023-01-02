@@ -5,6 +5,7 @@ using Microsoft.Identity.Web.Resource;
 using Newtonsoft.Json;
 using Server.Models;
 using Server.Repositories;
+using System.Reflection;
 using System.Text;
 
 namespace Server.Controllers
@@ -49,56 +50,112 @@ namespace Server.Controllers
                 cacheKey.Append("-reviewsTo=" + parameters.ReviewsTo);
             }
 
-            Console.WriteLine(cacheKey);
-
-            var cachedListings = await _cache.GetStringAsync(cacheKey.ToString());
-
-            if (cachedListings != null)
+            if(cacheKey.ToString() != "listings")
             {
-                Console.WriteLine("Found in cache!");
-                
-                return JsonConvert.DeserializeObject<List<SummaryListing>>(cachedListings);
-            }
+                var cachedListings = await _cache.GetStringAsync(cacheKey.ToString());
+
+                if (cachedListings != null)
+                {
+                    Console.WriteLine($"Found {cacheKey} in Cache!");
+
+                    return JsonConvert.DeserializeObject<List<SummaryListing>>(cachedListings);
+                } else
+                {
+                    var listings = await _listingsRepository.GetListings(parameters);
+
+                    var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(10));
+
+                    await _cache.SetStringAsync(cacheKey.ToString(), JsonConvert.SerializeObject(listings), cacheEntryOptions);
+                    Console.WriteLine($"Set {cacheKey} in Cache!");
+                    return listings;
+                }
+            } else
+            {
                 var listings = await _listingsRepository.GetListings(parameters);
 
-                var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
-                
-                await _cache.SetStringAsync(cacheKey.ToString(), JsonConvert.SerializeObject(listings), cacheEntryOptions);
-                Console.WriteLine("Set in cache!");
-
                 return listings;
+            }
         }
 
         // GET: api/Listings/2818
         [HttpGet("{id}")]
         public async Task<ActionResult<Listing>> GetListing(int id)
         {
-            var listing = await _listingsRepository.GetListing(id);
+            StringBuilder cacheKey = new StringBuilder("listings", 50);
 
-            if (listing == null)
+            cacheKey.Append("-id=" + id);
+
+            var cachedListing = await _cache.GetStringAsync(cacheKey.ToString());
+
+            if (cachedListing != null)
             {
-                return NotFound();
+                Console.WriteLine($"Found {cacheKey} in Cache!");
+
+                return Ok(JsonConvert.DeserializeObject<Listing>(cachedListing));
             }
-            return Ok(listing);
+            else
+            {
+                var listing = await _listingsRepository.GetListing(id);
+
+                if (listing == null)
+                {
+                    return NotFound();
+                }
+
+                var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(10));
+
+                await _cache.SetStringAsync(cacheKey.ToString(), JsonConvert.SerializeObject(listing), cacheEntryOptions);
+                Console.WriteLine($"Set {cacheKey} in Cache!");
+                return Ok(listing);
+            }
         }
 
         [HttpGet]
         [Route("neighbourhoods")]
         public async Task<ActionResult<Neighbourhoods>> GetNeighbourhoods()
         {
-            var neighbourhoods = await _listingsRepository.GetNeighbourhood();
-            return Ok(neighbourhoods);
+            var cacheKey = "neighbourhoods"; 
+            var cachedNeighbourhoods = await _cache.GetStringAsync(cacheKey);
+
+            if (cachedNeighbourhoods != null)
+            {
+                Console.WriteLine($"Found {cacheKey} in Cache!");
+
+                return Ok(JsonConvert.DeserializeObject<Neighbourhoods>(cachedNeighbourhoods));
+            } else
+            {
+                var neighbourhoods = await _listingsRepository.GetNeighbourhood();
+                var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(10));
+
+                await _cache.SetStringAsync(cacheKey, JsonConvert.SerializeObject(neighbourhoods), cacheEntryOptions);
+                Console.WriteLine($"Set {cacheKey} in Cache!");
+                return Ok(neighbourhoods);
+            }
         }
 
         [HttpGet]
         [Route("stats")]
-        [AllowAnonymous]
         [Authorize(Roles = "MyAppAdministratorsGroup")]
-        public async Task<ActionResult<List<Stats>>> GetStats()
+        public async Task<ActionResult<Stats>> GetStats()
         {
-            var stats = await _listingsRepository.GetStats();
+            var cacheKey = "stats";
+            var cachedStats = await _cache.GetStringAsync(cacheKey);
 
-            return Ok(stats);
+            if (cachedStats != null)
+            {
+                Console.WriteLine($"Found {cacheKey} in Cache!");
+
+                return Ok(JsonConvert.DeserializeObject<Stats>(cachedStats));
+            }
+            else
+            {
+                var stats = await _listingsRepository.GetStats();
+                var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(10));
+
+                await _cache.SetStringAsync(cacheKey, JsonConvert.SerializeObject(stats), cacheEntryOptions);
+                Console.WriteLine($"Set {cacheKey} in Cache!");
+                return Ok(stats);
+            }
         }
     }
 }
