@@ -6,7 +6,7 @@ const axios = require("axios");
 export async function getListingsGeo(params) {
   return new Promise((resolve, reject) => {
     axios
-      .get("https://localhost:7267/listings", { params })
+      .get("https://airbnbacserver.azurewebsites.net/listings", { params })
       .then(async function(response) {
         if (response.data) {
           let geoJSON = {
@@ -59,7 +59,7 @@ export async function getListingsGeo(params) {
 export async function getListing(id) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`https://localhost:7267/listings/${id}`)
+      .get(`https://airbnbacserver.azurewebsites.net/listings/${id}`)
       .then(async function(response) {
         if (response.data) {
           resolve(response);
@@ -81,7 +81,7 @@ export async function getStats(token) {
   };
   return new Promise((resolve, reject) => {
     axios
-      .get(`https://localhost:7267/listings/stats`, config)
+      .get(`https://airbnbacserver.azurewebsites.net/listings/stats`, config)
       .then(async function(response) {
         if (response.data) {
           resolve(response);
@@ -100,7 +100,7 @@ export async function getStats(token) {
 export async function getNeighbourhoods() {
   return new Promise((resolve, reject) => {
     axios
-      .get(`https://localhost:7267/listings/neighbourhoods`)
+      .get(`https://airbnbacserver.azurewebsites.net/listings/neighbourhoods`)
       .then(async function(response) {
         if (response.data) {
           resolve(response);
