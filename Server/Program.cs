@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000", "https://airbnbac.azurewebsites.net/", "http://airbnbac.azurewebsites.net/")
+                          policy.WithOrigins("http://localhost:3000", "https://airbnbac.azurewebsites.net", "http://airbnbac.azurewebsites.net", "https://airbnbserver.azurewebsites.net", "http://airbnbserver.azurewebsites.net")
                           .AllowAnyMethod()
                           .AllowAnyHeader();
                       });
