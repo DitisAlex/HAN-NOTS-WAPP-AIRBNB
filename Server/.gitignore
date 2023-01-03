@@ -75,5 +75,3 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 .env
-appsettings.json
-appsettings.Development.json
