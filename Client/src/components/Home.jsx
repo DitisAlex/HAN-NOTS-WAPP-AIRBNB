@@ -63,100 +63,98 @@ export default function Home(props) {
 
   useEffect(() => {
     if (listingsGeo && listingsGeo.features.length) {
-      map.current.on("load", () => {
-        if (!map.current.getSource("listings")) {
-          map.current.addSource("listings", {
-            type: "geojson",
-            data: listingsGeo,
-            cluster: true,
-            clusterMaxZoom: 12,
-            clusterRadius: 40,
-          });
-        }
-
-        map.current.addLayer({
-          id: "clusters",
-          type: "circle",
-          source: "listings",
-          filter: ["has", "point_count"],
-          paint: {
-            "circle-color": [
-              "step",
-              ["get", "point_count"],
-              "#51bbd6",
-              100,
-              "#f1f075",
-              750,
-              "#f28cb1",
-            ],
-            "circle-radius": [
-              "step",
-              ["get", "point_count"],
-              20,
-              100,
-              30,
-              750,
-              40,
-            ],
-          },
+      if (!map.current.getSource("listings")) {
+        map.current.addSource("listings", {
+          type: "geojson",
+          data: listingsGeo,
+          cluster: true,
+          clusterMaxZoom: 12,
+          clusterRadius: 40,
         });
+      }
 
-        map.current.addLayer({
-          id: "cluster-count",
-          type: "symbol",
-          source: "listings",
-          filter: ["has", "point_count"],
-          layout: {
-            "text-field": "{point_count_abbreviated}",
-            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-            "text-size": 12,
-          },
+      map.current.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "listings",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": [
+            "step",
+            ["get", "point_count"],
+            "#51bbd6",
+            100,
+            "#f1f075",
+            750,
+            "#f28cb1",
+          ],
+          "circle-radius": [
+            "step",
+            ["get", "point_count"],
+            20,
+            100,
+            30,
+            750,
+            40,
+          ],
+        },
+      });
+
+      map.current.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "listings",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": "{point_count_abbreviated}",
+          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+          "text-size": 12,
+        },
+      });
+
+      map.current.addLayer({
+        id: "unclustered-point",
+        type: "circle",
+        source: "listings",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": "#11b4da",
+          "circle-radius": 4,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "#fff",
+        },
+      });
+
+      map.current.on("click", "clusters", (e) => {
+        const features = map.current.queryRenderedFeatures(e.point, {
+          layers: ["clusters"],
         });
+        const clusterId = features[0].properties.cluster_id;
+        map.current
+          .getSource("listings")
+          .getClusterExpansionZoom(clusterId, (err, zoom) => {
+            if (err) return;
 
-        map.current.addLayer({
-          id: "unclustered-point",
-          type: "circle",
-          source: "listings",
-          filter: ["!", ["has", "point_count"]],
-          paint: {
-            "circle-color": "#11b4da",
-            "circle-radius": 4,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#fff",
-          },
-        });
-
-        map.current.on("click", "clusters", (e) => {
-          const features = map.current.queryRenderedFeatures(e.point, {
-            layers: ["clusters"],
-          });
-          const clusterId = features[0].properties.cluster_id;
-          map.current
-            .getSource("listings")
-            .getClusterExpansionZoom(clusterId, (err, zoom) => {
-              if (err) return;
-
-              map.current.easeTo({
-                center: features[0].geometry.coordinates,
-                zoom: zoom,
-              });
+            map.current.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom,
             });
-        });
-        map.current.on("click", "unclustered-point", (e) => {
-          setSelectedListingId(e.features[0].properties.id);
-        });
-        map.current.on("mouseenter", "unclustered-point", () => {
-          map.current.getCanvas().style.cursor = "pointer";
-        });
-        map.current.on("mouseenter", "clusters", () => {
-          map.current.getCanvas().style.cursor = "pointer";
-        });
-        map.current.on("mouseleave", "clusters", () => {
-          map.current.getCanvas().style.cursor = "";
-        });
-        map.current.on("mouseleave", "unclustered-point", () => {
-          map.current.getCanvas().style.cursor = "";
-        });
+          });
+      });
+      map.current.on("click", "unclustered-point", (e) => {
+        setSelectedListingId(e.features[0].properties.id);
+      });
+      map.current.on("mouseenter", "unclustered-point", () => {
+        map.current.getCanvas().style.cursor = "pointer";
+      });
+      map.current.on("mouseenter", "clusters", () => {
+        map.current.getCanvas().style.cursor = "pointer";
+      });
+      map.current.on("mouseleave", "clusters", () => {
+        map.current.getCanvas().style.cursor = "";
+      });
+      map.current.on("mouseleave", "unclustered-point", () => {
+        map.current.getCanvas().style.cursor = "";
       });
     }
   }, [listingsGeo]);
