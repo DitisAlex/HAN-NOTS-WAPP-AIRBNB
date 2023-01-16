@@ -54,7 +54,7 @@ public class ListingsRepository : IListingsRepository
             listings = listings.Where(listing => listing.ReviewScoresRating <= parameters.ReviewsTo);
         }
 
-        return await listings.ToListAsync();
+        return await listings.AsNoTracking().ToListAsync();
     }
 
     public async Task<Listing?> GetListing(int id)
@@ -72,7 +72,7 @@ public class ListingsRepository : IListingsRepository
             .Select(g => new {
                 Neighbourhood = g.Key ?? "Unknown",
             })
-            .ToListAsync();
+            .AsNoTracking().ToListAsync();
 
         neighbourhoodList.ForEach(h =>
         {
@@ -102,7 +102,7 @@ public class ListingsRepository : IListingsRepository
                 AverageAvailability90 = g.Average(y => y.Availability90), 
                 AverageAvailability365 = g.Average(y => y.Availability365)
             })
-            .ToListAsync();
+            .AsNoTracking().ToListAsync();
 
         listingsPerNeighbourhood.ForEach(h =>
         {
@@ -127,6 +127,7 @@ public class ListingsRepository : IListingsRepository
             })
             .OrderByDescending(g => g.Count)
             .Take(8)
+            .AsNoTracking()
             .ToListAsync();
 
         listingsPerProperty.ForEach(h =>
@@ -140,6 +141,7 @@ public class ListingsRepository : IListingsRepository
 
 
         stats.TotalAvailable = _context.Listings
+            .AsNoTracking()
             .Count();
 
         return stats;
