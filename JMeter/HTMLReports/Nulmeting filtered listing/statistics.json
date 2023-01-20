@@ -1,0 +1,50 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 382,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 103.07853403141364,
+    "medianResTime" : 97.0,
+    "minResTime" : 90.0,
+    "maxResTime" : 251.0,
+    "pct1ResTime" : 117.69999999999999,
+    "pct2ResTime" : 155.39999999999986,
+    "pct3ResTime" : 198.89000000000027,
+    "throughput" : 0.6369830349073372,
+    "receivedKBytesPerSec" : 2434.9311004152896,
+    "sentKBytesPerSec" : 0.07900082561839046
+  },
+  "Transaction Controller" : {
+    "transaction" : "Transaction Controller",
+    "sampleCount" : 382,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 103.08115183246069,
+    "medianResTime" : 97.0,
+    "minResTime" : 90.0,
+    "maxResTime" : 251.0,
+    "pct1ResTime" : 117.69999999999999,
+    "pct2ResTime" : 155.39999999999986,
+    "pct3ResTime" : 198.89000000000027,
+    "throughput" : 0.6369819727431746,
+    "receivedKBytesPerSec" : 2434.927040186976,
+    "sentKBytesPerSec" : 0.07900069388513982
+  },
+  "https://localhost:7267/listings?neighbourhood=zuid" : {
+    "transaction" : "https://localhost:7267/listings?neighbourhood=zuid",
+    "sampleCount" : 382,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 103.07853403141364,
+    "medianResTime" : 97.0,
+    "minResTime" : 90.0,
+    "maxResTime" : 251.0,
+    "pct1ResTime" : 117.69999999999999,
+    "pct2ResTime" : 155.39999999999986,
+    "pct3ResTime" : 198.89000000000027,
+    "throughput" : 0.6369830349073372,
+    "receivedKBytesPerSec" : 2434.9311004152896,
+    "sentKBytesPerSec" : 0.07900082561839046
+  }
+}
