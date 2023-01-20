@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const apiURL = "https://airbnbserver.azurewebsites.net"; //https://localhost:7267 & https://airbnbserver.azurewebsites.net
+const apiURL = "https://localhost:7267"; //https://localhost:7267 & https://airbnbserver.azurewebsites.net
 /**
  * Fetch all listings and transform into geoJSON
  */

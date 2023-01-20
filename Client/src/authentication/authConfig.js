@@ -3,7 +3,7 @@ export const msalConfig = {
     clientId: "44c4be7a-162a-4b57-bc2b-6858db722f53",
     authority:
       "https://login.microsoftonline.com/d959b97f-9c0b-4f25-873b-27048484151a",
-    redirectUri: "https://airbnbac.azurewebsites.net", //http://localhost:3000
+    redirectUri: "http://localhost:3000", //https://airbnbac.azurewebsites.net
   },
   cache: {
     cacheLocation: "sessionStorage", // This configures where your cache will be stored
