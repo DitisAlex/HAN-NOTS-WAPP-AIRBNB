@@ -1,5 +1,5 @@
 # HAN-NOTS-WAPP-AIRBNB
-School Project for NotS WAPP - AirBNB [Final Grade: X]
+School Project for NotS WAPP - AirBNB [Final Grade: 8,7]
 
 ## To Do:
 ### Back-End:
@@ -9,10 +9,10 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 - [ ] Nulmeting voor statistic route
 - [x] Routes for statistics
 - [x] Authorization by roles
-- [ ] Implement performance: AsNoTracking, Indexing & Redis Cache
-- [ ] Fix top5 OWasp issues
-- [ ] Redis Caching
-- [ ] Deploy on Azure -> App Service (tot 7/1/23 subscription)
+- [x] Implement performance: AsNoTracking, Indexing & Redis Cache
+- [x] Fix top5 OWasp issues
+- [x] Redis Caching
+- [x] Deploy on Azure -> App Service (tot 7/1/23 subscription)
 
 ### Front-End:
 - [x] Create React Front-End
@@ -24,5 +24,5 @@ School Project for NotS WAPP - AirBNB [Final Grade: X]
 - [x] Performance mapbox verbeteren (erg laggy met clusters nog) -> cause fixed height (ignore)
 
 ### Documentation:
-- [ ] Get performance before/after (JMeter)
-- [ ] After finish check for errors (OWasp)
+- [x] Get performance before/after (JMeter)
+- [x] After finish check for errors (OWasp)
